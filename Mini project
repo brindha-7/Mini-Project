@@ -1,0 +1,104 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(11, 12, 2, 3, 4, 5);
+
+int F1, F2, F3, F4, F5, F6;
+void setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+  lcd.begin(16, 2);
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Flux sensor");
+  lcd.setCursor(0, 1);
+  lcd.print("ADC Read");
+
+  delay(1500);
+
+  lcd.clear();
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  F1 = analogRead(A0);
+  F2 = analogRead(A1);
+  F3 = analogRead(A2);
+  F4 = analogRead(A3);
+  F5 = analogRead(A4);
+
+  F1 = map(F1, 0, 1023, 0, 255);
+  F2 = map(F2, 0, 1023, 0, 255);
+  F3 = map(F3, 0, 1023, 0, 255);
+  F4 = map(F4, 0, 1023, 0, 255);
+  F5 = map(F5, 0, 1023, 0, 255);
+
+  Serial.print("Flux - 1 : ");
+  Serial.print(F1);
+  Serial.print(" || ");
+
+  Serial.print("Flux - 2 : ");
+  Serial.print(F2);
+  Serial.print(" || ");
+
+  Serial.print("Flux - 3 : ");
+  Serial.print(F3);
+  Serial.print(" || ");
+
+  Serial.print("Flux - 4 : ");
+  Serial.print(F4);
+  Serial.print(" || ");
+
+  Serial.print("Flux - 5 : ");
+  Serial.println(F5);
+
+  lcd.setCursor(0, 0);
+  lcd.print("                ");
+  lcd.setCursor(0, 1);
+  lcd.print("                ");
+
+  lcd.setCursor(0, 0);
+  lcd.print(F1);
+  lcd.setCursor(5, 0);
+  lcd.print(F2);
+  lcd.setCursor(10, 0);
+  lcd.print(F3);
+
+  lcd.setCursor(0, 1);
+  lcd.print(F4);
+  lcd.setCursor(5, 1);
+  lcd.print(F5);
+  lcd.setCursor(10, 1);
+  lcd.print("8-BIT");
+
+  if (F1 > 195) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Water");
+    delay(1000);
+    lcd.clear();
+  } else if (F2 > 187) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("I'm hungry");
+    delay(1000);
+    lcd.clear();
+  } else if (F3 > 180) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Restroom");
+    delay(1000);
+    lcd.clear();
+  } else if (F4 > 188) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Thank you");
+    delay(1000);
+    lcd.clear();
+  } else if (F5 > 192) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Need help");
+    delay(1000);
+    lcd.clear();
+  }
+  delay(250);
+}
